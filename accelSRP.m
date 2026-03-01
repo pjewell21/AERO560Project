@@ -11,6 +11,7 @@ function [aSRP] = accelSRP (area,Psr,JDvect,cr,mass)
 
 for i = 1:length(JDvect)
     [lamda eps r_S] = solar_position(JDvect(i));
-    accelSRP(i) = 
+    fSRP = -Psr*cr*area*r_S;
+    aSRP(i) = fSRP/mass;
 
 end
