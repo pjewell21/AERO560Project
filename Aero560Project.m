@@ -39,6 +39,11 @@ x0_41 = [alphaS0_41;betaS0_41;gammaS0_41;alphaS0dot_41;betaS0dot_41;gammaS0dot_4
 % Set ThetaG Value
 thetaG_42 = deg2rad(12.3);
 
+% Calculate Omega of Sun Pointing Frame
+year = 86400*365;
+omegaSP = (2*pi)/year;
+Omega_SP = [0; 0; omegaSP]; 
+
 % Initial States - Case 3
 alphaS0_42 = deg2rad(5);
 betaS0_42 = deg2rad(20);
@@ -55,8 +60,15 @@ betaTgtdot_42 = deg2rad(0);
 gammaTgtdot_42 = deg2rad(0);
 
 x0_42 = [alphaS0_42;betaS0_42;gammaS0_42;alphaS0dot_42;betaS0dot_42;gammaS0dot_42];
+euler0_42 = [alphaS0_42,betaS0_42,gammaS0_42];
+omega0_42 = [alphaS0dot_42;betaS0dot_42;gammaS0dot_42];
+
+quat0_42a = eul2quat(euler0_42,"ZYZ");
+%quat0_42 = [quat0_42a(4);quat0_42a(1);quat0_42a(2);quat0_42a(3)];
+quat0_42 = [quat0_42a(2); quat0_42a(3); quat0_42a(4); quat0_42a(1)];
 
 xTarget_42 = [alphaTgt_42;betaTgt_42;gammaTgt_42;alphaTgtdot_42;betaTgtdot_42;gammaTgtdot_42];
+targetAngles_42 = [alphaTgt_42;betaTgt_42;gammaTgt_42];
 
 % Gains
 kP = 0.1;
