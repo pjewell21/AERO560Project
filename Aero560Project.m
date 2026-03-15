@@ -78,11 +78,6 @@ kD = 1;
 kP_g = 0.1;
 kD_g = 1;
 
-
-kP_g = 0.1;
-kD_g = 1;
-
-
 % Run Simulation
 out = sim("Aero560ProjectSimulink.slx");
 
@@ -162,3 +157,94 @@ ylabel("Omega [rad/s]")
 legend("\omega_x","\omega_y","\omega_z")
 
 
+%% Control Flow Section
+
+% Run Simulation
+out2 = sim("Control_Flow.slx");
+
+% Extract Data
+booleanData = squeeze(out2.Boolean.Data);
+booleanTime = squeeze(out2.Boolean.Time);
+
+RWAngMom = squeeze(out2.rwAngMomentum.Data);
+RWTime = squeeze(out2.rwAngMomentum.Time);
+
+quaternions = squeeze(out2.quats.Data);
+quaternionsTime = squeeze(out2.quats.Time);
+
+omega2 = squeeze(out2.omegas.Data);
+omega2Time = squeeze(out2.omegas.Time);
+
+torqueSRP = squeeze(out2.SRPTorque.Data);
+timeTorqueSRP = squeeze(out2.SRPTorque.Time);
+
+ABGPlot = squeeze(out2.alphaBetaGamma.Data);
+timeABGPlot = squeeze(out2.alphaBetaGamma.Time);
+
+% Plot
+figure()
+subplot(2,1,1)
+plot(RWTime,RWAngMom(:,1),LineWidth=1.2)
+hold on
+plot(RWTime,RWAngMom(:,2),LineWidth=1.2)
+plot(RWTime,RWAngMom(:,3),LineWidth=1.2)
+grid on
+legend("h_x","h_y","h_z")
+ylabel("h_x, h_y, h_z [Nms]")
+xlabel("Time [s]")
+subplot(2,1,2)
+plot(booleanTime,booleanData,LineWidth=1.5,LineStyle="--")
+grid on
+ylim([-0.1 1.1])
+ylabel("Gimbal Drive")
+xlabel("Time [s]")
+
+figure()
+subplot(2,1,1)
+hold on
+plot(quaternionsTime,quaternions(1,:),LineWidth=1.2)
+plot(quaternionsTime,quaternions(2,:),LineWidth=1.2)
+plot(quaternionsTime,quaternions(3,:),LineWidth=1.2)
+plot(quaternionsTime,quaternions(4,:),LineWidth=1.2)
+ylim([-0.1,1.1])
+grid on
+xlabel("Time [s]")
+ylabel("Quaternions")
+legend("\epsilon_1","\epsilon_2","\epsilon_3","eta")
+
+subplot(2,1,2)
+hold on
+plot(omega2Time,omega2(1,:),LineWidth=1.2)
+plot(omega2Time,omega2(2,:),LineWidth=1.2)
+plot(omega2Time,omega2(3,:),LineWidth=1.2)
+grid on
+xlabel("Time [s]")
+ylabel("Omega [rad/s]")
+legend("\omega_x","\omega_y","\omega_z")
+
+figure()
+plot(timeTorqueSRP,torqueSRP(1,:),LineWidth=1.2)
+hold on
+plot(timeTorqueSRP,torqueSRP(2,:),LineWidth=1.2)
+plot(timeTorqueSRP,torqueSRP(3,:),LineWidth=1.2)
+grid on
+ylabel("SRP Torque [Nm]")
+xlabel("Time [s]")
+
+figure()
+subplot(2,1,1)
+plot(timeABGPlot,ABGPlot(:,1),LineWidth=1.2)
+hold on
+plot(timeABGPlot,ABGPlot(:,2),LineWidth=1.2)
+plot(timeABGPlot,ABGPlot(:,3),LineWidth=1.2)
+grid on
+grid on
+legend("\alpha","\beta","\gamma")
+ylabel("\alpha, \beta, \gamma [deg]")
+xlabel("Time [s]")
+subplot(2,1,2)
+plot(booleanTime,booleanData,LineWidth=1.5,LineStyle="--")
+grid on
+ylim([-0.1 1.1])
+ylabel("Gimbal Drive")
+xlabel("Time [s]")
