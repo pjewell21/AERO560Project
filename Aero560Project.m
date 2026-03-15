@@ -37,6 +37,7 @@ x0_41 = [alphaS0_41;betaS0_41;gammaS0_41;alphaS0dot_41;betaS0dot_41;gammaS0dot_4
 %% Section 4.2
 
 % Set ThetaG Value
+thetaG_init = deg2rad(60);
 thetaG_42 = deg2rad(12.3);
 
 % Calculate Omega of Sun Pointing Frame
@@ -73,6 +74,10 @@ targetAngles_42 = [alphaTgt_42;betaTgt_42;gammaTgt_42];
 % Gains
 kP = 0.1;
 kD = 1;
+
+kP_g = 0.1;
+kD_g = 1;
+
 
 
 
