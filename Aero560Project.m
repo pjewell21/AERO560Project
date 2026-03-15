@@ -79,5 +79,86 @@ kP_g = 0.1;
 kD_g = 1;
 
 
+kP_g = 0.1;
+kD_g = 1;
+
+
+% Run Simulation
+out = sim("Aero560ProjectSimulink.slx");
+
+% Extract Data
+alphaBetaGamma = squeeze(out.alphaBetaGamma.Data);
+timeABG = squeeze(out.alphaBetaGamma.Time);
+
+hRW = squeeze(out.angMomRW.Data);
+timehRW = squeeze(out.angMomRW.Time);
+
+SRPTorque = squeeze(out.SRPTorque.Data);
+timeSRP = squeeze(out.SRPTorque.Time);
+
+quats = squeeze(out.quaternionOut.Data);
+timeQuats = squeeze(out.quaternionOut.Time);
+
+omega = squeeze(out.omegaOut.Data);
+timeOmega = squeeze(out.omegaOut.Time);
+
+
+% Plots
+figure()
+subplot(2,1,1)
+plot(timeABG,alphaBetaGamma(:,1),'LineWidth',1.2)
+hold on
+plot(timeABG,alphaBetaGamma(:,2),'LineWidth',1.2)
+plot(timeABG,alphaBetaGamma(:,3),'LineWidth',1.2)
+ylim([-10,20])
+grid on
+legend("\alpha","\beta","\gamma")
+ylabel("\alpha, \beta, \gamma [deg]")
+
+subplot(2,1,2)
+plot(timehRW,hRW(1,:),'LineWidth',1.2)
+hold on
+plot(timehRW,hRW(2,:),'LineWidth',1.2)
+plot(timehRW,hRW(3,:),'LineWidth',1.2)
+ylim([-.1,.1])
+grid on
+legend("h_x","h_y","h_z")
+ylabel("h_x, h_y, h_z [Nms]")
+xlabel("Time [s]")
+
+figure()
+plot(timeSRP, SRPTorque(1,:),'LineWidth',1.2)
+hold on
+plot(timeSRP, SRPTorque(2,:),'LineWidth',1.2)
+plot(timeSRP, SRPTorque(3,:),'LineWidth',1.2)
+grid on
+xlim([0, 360]) 
+ylim([-1e-6,2.1e-6])
+ylabel("SRP Torque [Nm]")
+xlabel("Time [s]")
+
+figure()
+subplot(2,1,1)
+plot(timeQuats,quats(1,:),'LineWidth',1.2)
+hold on
+plot(timeQuats,quats(2,:),'LineWidth',1.2)
+plot(timeQuats,quats(3,:),'LineWidth',1.2)
+plot(timeQuats,quats(4,:),'LineWidth',1.2)
+grid on
+ylim([-0.1,1.1])
+xlim([0, 360])
+xlabel("Time [s]")
+ylabel("Quaternions")
+legend("\epsilon_1","\epsilon_2","\epsilon_3","eta")
+subplot(2,1,2)
+plot(timeOmega,omega(1,:),'LineWidth',1.2)
+hold on
+plot(timeOmega,omega(2,:),'LineWidth',1.2)
+plot(timeOmega,omega(3,:),'LineWidth',1.2)
+grid on
+xlim([0, 360])
+xlabel("Time [s]")
+ylabel("Omega [rad/s]")
+legend("\omega_x","\omega_y","\omega_z")
 
 
