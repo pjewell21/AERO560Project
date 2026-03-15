@@ -78,6 +78,62 @@ kD = 1;
 kP_g = 0.1;
 kD_g = 1;
 
+opt = simset('RelTol', 1e-8);
+
+%% Open loop sim
+% Run Simulation
+open = sim("linear_without_RW.slx", 17280, opt);
+quat_openloop = squeeze(open.quat_openloop);
+srp_torque_openloop = squeeze(open.srp_torque_openloop);
+w_openloop = squeeze(open.w_openloop);
+
+% Plots
+figure()
+plot(open.tout/86400,open.eul_openloop(:,1),'LineWidth',1.2)
+hold on
+plot(open.tout/86400,open.eul_openloop(:,2),'LineWidth',1.2)
+plot(open.tout/86400,open.eul_openloop(:,3),'LineWidth',1.2)
+ylim([-150, 100])
+grid on
+legend("\alpha","\beta","\gamma")
+ylabel("\alpha, \beta, \gamma [deg]")
+xlabel("Time [days]")
+
+figure()
+subplot(2,1,1)
+plot(open.tout/86400,quat_openloop(1,:),'LineWidth',1.2)
+hold on
+plot(open.tout/86400,quat_openloop(2,:),'LineWidth',1.2)
+plot(open.tout/86400,quat_openloop(3,:),'LineWidth',1.2)
+plot(open.tout/86400,quat_openloop(4,:),'LineWidth',1.2)
+grid on
+ylim([-1,1.1])
+xlabel("Time [s]")
+ylabel("Quaternions")
+legend("\epsilon_1","\epsilon_2","\epsilon_3","\eta")
+subplot(2,1,2)
+plot(open.tout/86400,w_openloop(1,:),'LineWidth',1.2)
+hold on
+plot(open.tout/86400,w_openloop(2,:),'LineWidth',1.2)
+plot(open.tout/86400,w_openloop(3,:),'LineWidth',1.2)
+grid on
+xlabel("Time [s]")
+ylabel("Omega [rad/s]")
+legend("\omega_x","\omega_y","\omega_z")
+
+figure()
+plot(open.tout/86400, srp_torque_openloop(1,:),'LineWidth',1.2)
+hold on
+plot(open.tout/86400, srp_torque_openloop(2,:),'LineWidth',1.2)
+plot(open.tout/86400, srp_torque_openloop(3,:),'LineWidth',1.2)
+grid on
+ylim([-3e-6,3e-6])
+ylabel("SRP Torque [Nm]")
+xlabel("Time [s]")
+
+
+
+%% Reaction wheel sim
 % Run Simulation
 out = sim("Aero560ProjectSimulink.slx");
 
